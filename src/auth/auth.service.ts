@@ -7,6 +7,8 @@ import * as bcrypt from 'bcryptjs';
 import { JwtService } from '@nestjs/jwt';
 import { SignUpDto } from './dto/signup.dto';
 import { LoginDto } from './dto/login.dto';
+import { UserUpdateDto } from './dto/userUpdate.dto';
+import { Query  } from 'express-serve-static-core';
 
 @Injectable()
 export class AuthService {
@@ -51,4 +53,35 @@ export class AuthService {
 
     return { token };
   }
+
+  async findAll(query: Query): Promise<User[]> {
+       
+    const resPerPage = 10
+    const currentPage = Number(query.page) || 1
+    const skip = resPerPage * (currentPage - 1)
+   
+   
+    const keyword = query.keyword ? {
+        name:{
+            $regex : query.keyword,
+            $options: 'i'
+        }
+    }:{}
+
+    const user = await this.userModel.find({ ...keyword }).limit(resPerPage).skip(skip);
+    return user
+}
+
+    async findOne(id:string){
+        const user = await this.userModel.findById(id);
+        return user;
+    }
+
+    async delete(id:string){
+        return await this.userModel.findByIdAndDelete(id);
+    }
+
+    async update(id:string, body: UserUpdateDto){
+        return await this.userModel.findByIdAndUpdate(id, body, { new: true, runValidators: true });
+    }
 }

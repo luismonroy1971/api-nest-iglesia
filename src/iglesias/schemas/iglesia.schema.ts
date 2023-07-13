@@ -1,4 +1,6 @@
 import { Schema, Prop, SchemaFactory } from "@nestjs/mongoose";
+import { User } from "../../auth/schemas/user.schema";
+import mongoose, { Mongoose } from "mongoose";
 
 @Schema({
     timestamps: true,
@@ -60,7 +62,10 @@ export class Iglesia {
     distrito: string;
   
     @Prop({ type: String, trim:true })
-    imagen: string;      
+    imagen: string;     
+    
+    @Prop({type: mongoose.Schema.Types.ObjectId, ref: 'User'})
+    user: User;
 }
 
 export const IglesiaSchema = SchemaFactory.createForClass(Iglesia);

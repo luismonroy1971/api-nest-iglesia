@@ -5,6 +5,8 @@ import { Model } from 'mongoose';
 import { CreateIglesiaDto } from './dto/create-iglesia.dto';
 import { UpdateIglesiaDto } from './dto/update-iglesia.dto';
 import { Query  } from 'express-serve-static-core';
+import { User } from '../auth/schemas/user.schema';
+import { Transform } from 'class-transformer';
 
 @Injectable()
 export class IglesiasService {
@@ -12,24 +14,42 @@ export class IglesiasService {
 
     async findAll(query: Query): Promise<Iglesia[]> {
        
-        const resPerPage = 5
+        const resPerPage = 10
         const currentPage = Number(query.page) || 1
         const skip = resPerPage * (currentPage - 1)
        
        
-        const keyword = query.keyword ? {
+        const keyword = query.iglesia ? {
             nombreIglesia:{
-                $regex : query.keyword,
+                $regex : query.iglesia,
                 $options: 'i'
             }
         }:{}
 
-        const iglesia = await this.iglesiaModel.find({ ...keyword }).limit(resPerPage).skip(skip);
-        return iglesia
+        const church = await this.iglesiaModel.find({ ...keyword }).limit(resPerPage).skip(skip);
+        return church
     }
 
-    async create(createIglesia:CreateIglesiaDto) {
-       const newIglesia = new this.iglesiaModel(createIglesia);
+    async findChurchesByLocation( department : string, province: string, district : string): Promise<Iglesia[]> {
+        const departamento = department;
+        const provincia = province;
+        const distrito = district;
+        const churches = await this.iglesiaModel.find({
+            $and: [
+              { departamento: { $regex: `.*${departamento}.*` , $options: 'i' } },
+              { provincia: { $regex: `.*${provincia}.*` , $options: 'i' } }, // Busca el texto en campo1 (insensible a mayúsculas/minúsculas)
+              { distrito: { $regex: `.*${distrito}.*` , $options: 'i' } }
+                // Busca el texto en campo2 (insensible a mayúsculas/minúsculas)
+            ]
+          });
+        return churches;
+      }
+
+    async create(createIglesia:CreateIglesiaDto, user: User) {
+
+        const data = Object.assign(createIglesia, {user: user._id})
+
+       const newIglesia = new this.iglesiaModel(data);
        return newIglesia.save();
     }
 
