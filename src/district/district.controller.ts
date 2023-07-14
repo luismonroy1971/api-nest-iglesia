@@ -11,7 +11,7 @@ export class DistrictController {
     @Get('')
     @ApiQuery({ name: 'department', required: true })
     @ApiQuery({ name: 'province', required: true })
-    getChurchesByLocation(
+    getDistrictsByLocation(
         @Query('department') department: string,
         @Query('province') province: string,
     ): Promise<District[]> {
