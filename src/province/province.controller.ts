@@ -8,7 +8,7 @@ import { ApiQuery } from '@nestjs/swagger';
 export class ProvinceController {
     constructor(private provinceService: ProvinceService) {}
 
-    @Get()
+    @Get('')
     @ApiQuery({ name: 'department', required: true })
     getProvincesByLocation(
         @Query('department') department: string,

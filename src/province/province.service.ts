@@ -11,14 +11,13 @@ export class ProvinceService {
 
     async findProvincesByLocation( department : string): Promise<Province[]> {
         const departamento = department;
-
-        const Provinces = await this.provinceModel.find({
+        const provinces = await this.provinceModel.find({
             $and: [
-              { departament: { $regex: `.*${departamento}.*` , $options: 'i' } }, // Busca el texto en campo1 (insensible a mayúsculas/minúsculas)
+              { departament: { $regex: `.*${departamento}.*` , $options: 'i' } },
                 // Busca el texto en campo2 (insensible a mayúsculas/minúsculas)
             ]
           });
-        return Provinces;
+        return provinces;
       }
 
 }
