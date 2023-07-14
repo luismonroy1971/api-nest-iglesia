@@ -13,7 +13,7 @@ export class ProvinceService {
         const departamento = department;
         const provinces = await this.provinceModel.find({
             $and: [
-              { departament: { $regex: `.*${departamento}.*` , $options: 'i' } },
+              { department: { $regex: `.*${departamento}.*` , $options: 'i' } },
                 // Busca el texto en campo2 (insensible a mayúsculas/minúsculas)
             ]
           });
