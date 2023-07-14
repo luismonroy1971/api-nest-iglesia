@@ -3,6 +3,9 @@ import { IglesiasModule } from './iglesias/iglesias.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
+import { DepartmentsModule } from './departments/departments.module';
+import { ProvinceModule } from './province/province.module';
+import { DistrictModule } from './district/district.module';
 
 @Module({
   imports: [
@@ -13,6 +16,9 @@ import { AuthModule } from './auth/auth.module';
     MongooseModule.forRoot(process.env.DB_URI),
     IglesiasModule,
     AuthModule,
+    DepartmentsModule,
+    ProvinceModule,
+    DistrictModule,
     ],
 })
 export class AppModule {}
