@@ -1,9 +1,9 @@
 import { Controller, Get, Query } from '@nestjs/common';
 import { DistrictService } from './district.service';
 import { District } from './schemas/district.schema';
-import { ApiQuery } from '@nestjs/swagger';
+import { ApiQuery, ApiTags } from '@nestjs/swagger';
 
-
+@ApiTags('Distritos')
 @Controller('districts')
 export class DistrictController {
     constructor(private districtService: DistrictService) {}

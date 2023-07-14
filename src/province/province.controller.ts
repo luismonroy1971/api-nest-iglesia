@@ -1,9 +1,9 @@
 import { Controller, Get, Query } from '@nestjs/common';
 import { ProvinceService } from './province.service';
 import { Province } from './schemas/province.schema';
-import { ApiQuery } from '@nestjs/swagger';
+import { ApiQuery, ApiTags } from '@nestjs/swagger';
 
-
+@ApiTags('Provincias')
 @Controller('provinces')
 export class ProvinceController {
     constructor(private provinceService: ProvinceService) {}

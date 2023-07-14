@@ -16,7 +16,7 @@ export class DepartmentsService {
        
        
         const keyword = query.department ? {
-            departmento:{
+            department:{
                 $regex : query.department,
                 $options: 'i'
             }
